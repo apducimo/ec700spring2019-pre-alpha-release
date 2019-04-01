@@ -31,6 +31,7 @@ module test_bp
    // Trace replay parameters
    , parameter trace_ring_width_p          = "inv"
    , parameter trace_rom_addr_width_p      = "inv"
+   ,parameter TIMEOUT = 32'd1000000
  );
 
 logic clk, reset;
@@ -75,5 +76,59 @@ testbench
    ,.reset_i(reset)
    );
 
+  // ---------------------------------------------------------------------------
+  // Simulation Control
+  //  
+  reg [31:0] clk_cnt = 0;
+  reg [31:0] lce_req_cnt;
+  reg [31:0] cce_req_cnt;
+  reg [31:0] sb_miss_cnt;
+  reg [31:0] bp_correct;
+  reg [31:0] bp_incorrect;
+
+  initial begin
+    #(TIMEOUT);
+    $display("Simulation Timeout!!!");
+        $display("Clock cycles count: %0d", test_bp.clk_cnt);
+        $display("Correct predictions: %0d", test_bp.bp_correct);
+        $display("Incorrect predictions: %0d", test_bp.bp_incorrect);
+        $display("LCE request count: %0d", test_bp.lce_req_cnt);
+        $display("CCE request count: %0d", test_bp.cce_req_cnt);
+        $display("SB miss count: %0d", test_bp.sb_miss_cnt); 
+    $finish;
+  end
+
+always @(posedge clk or posedge reset) begin : sb_cce_rq_vld_seq
+  if (reset) begin
+    lce_req_cnt  <= 'd0;
+    cce_req_cnt  <= 'd0;
+    sb_miss_cnt  <= 'd0;
+    bp_correct   <= 'd0;
+    bp_incorrect <= 'd0;
+  end else begin
+    if (tb.dut.rof1[0].fe.bp_fe_pc_gen_1.gen_bp.branch_prediction_1.w_v_i) begin
+      if (tb.dut.rof1[0].fe.bp_fe_pc_gen_1.gen_bp.branch_prediction_1.attaboy_i) begin
+        bp_correct <= bp_correct + 1;
+      end else begin
+        bp_incorrect <= bp_incorrect + 1;
+      end
+    end
+    if (tb.dut.rof1[0].be.be_mmu.dcache.lce_req_v_o && tb.dut.rof1[0].be.be_mmu.dcache.lce_req_ready_i) begin
+      lce_req_cnt <= lce_req_cnt + 1;
+    end
+    if (tb.dut.rof1[0].be.be_mmu.lce_req_v_o && tb.dut.rof1[0].be.be_mmu.lce_req_ready_i) begin
+      cce_req_cnt <= cce_req_cnt + 1;
+    end
+/* -----\/----- EXCLUDED -----\/-----
+    if (tb.dut.rof1[0].be.be_mmu.u_bp_be_stream_buffer.sb_miss) begin
+      sb_miss_cnt <= sb_miss_cnt +1;
+    end
+ -----/\----- EXCLUDED -----/\----- */
+  end
+end
+
+  always @(posedge clk) begin
+    clk_cnt <= clk_cnt + 1;
+  end
 endmodule : test_bp
 
