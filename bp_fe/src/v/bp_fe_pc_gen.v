@@ -113,6 +113,9 @@ logic                          stalled_pc_redirect;
 logic                          bht_r_v_branch_jalr_inst;
 logic                          branch_inst;
    
+logic [eaddr_width_p-1:0] ras_pc;
+logic                     ras_pc_v;
+
 //connect pc_gen to the rest of the FE submodules as well as FE top module   
 assign pc_gen_icache_o = pc_gen_icache;
 assign pc_gen_itlb_o   = pc_gen_itlb;
@@ -255,7 +258,7 @@ assign bht_r_v_branch_jalr_inst = (icache_pc_gen_v_i & (scan_instr.instr_scan_cl
 //select among 2 available branch predictor implementations
 generate
   if (branch_predictor_p) 
-    begin //select bht_btb implementation for branch predictor
+    begin : gen_bp //select bht_btb implementation for branch predictor
       bp_fe_branch_predictor 
         #(.eaddr_width_p(eaddr_width_p)
           ,.btb_indx_width_p(btb_indx_width_p)
@@ -278,7 +281,7 @@ generate
           );
     end 
   else 
-    begin //seselct Pc+4 as branch predictor
+    begin : gen_bpp4 //seselct Pc+4 as branch predictor
       branch_prediction_pc_plus_4 
        #(.eaddr_width_p(eaddr_width_p)
          ,.btb_indx_width_p(btb_indx_width_p)
@@ -301,5 +304,21 @@ generate
          );
     end
   endgenerate
+
+  bp_fe_ras #(
+    .eaddr_width_p   (eaddr_width_p),
+    .instr_width_p   (instr_width_p),
+    .ras_idx_width_p (32'd4)
+
+  ) u_bp_fe_ras (
+    .reset_i (reset_i),             // (I) Reset, active high
+    .clk_i   (clk_i),               // (I) Clock
+    .instr_i (icache_pc_gen.instr), // (I) Opcode
+    .pc_i    (fe_pc_gen_cmd.pc),    // (O) Opcode PC
+    .pc_o    (ras_pc),              // (O) PC prediction
+    .pc_v_o  (ras_pc_v)             // (O) PC prediction valid
+  );
+
+
 
 endmodule
