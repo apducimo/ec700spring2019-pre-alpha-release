@@ -7,6 +7,7 @@
 +incdir+$BSG_IP_CORES_DIR/bsg_noc
 # common includes
 +incdir+$BP_COMMON_DIR/src/include
+$BP_COMMON_DIR/src/include/bp_common_fe_be_if.vh
 # fe includes
 +incdir+$BP_FE_DIR/src/include
 # be includes
@@ -86,6 +87,7 @@ $BP_BE_DIR/src/v/bp_be_checker/bp_be_director.v
 $BP_BE_DIR/src/v/bp_be_checker/bp_be_scheduler.v
 # MMU
 $BP_BE_DIR/src/v/bp_be_mmu/bp_be_mmu_top.v
+$BP_BE_DIR/src/v/bp_be_mmu/bp_be_stream_buffer.sv
 $BP_BE_DIR/src/v/bp_be_mmu/bp_be_dcache/bp_be_dcache.v
 $BP_BE_DIR/src/v/bp_be_mmu/bp_be_dcache/bp_be_dcache_lce_cmd.v
 $BP_BE_DIR/src/v/bp_be_mmu/bp_be_dcache/bp_be_dcache_lce.v
@@ -105,7 +107,9 @@ $BP_BE_DIR/src/v/common/bsg_dff_reset_en.v
 $BP_BE_DIR/src/v/common/bsg_fifo_1r1w_rolly.v
 ## FE files
 $BP_FE_DIR/src/v/bp_fe_bht.v
+$BP_FE_DIR/src/v/bp_tournament_bht_better.v
 $BP_FE_DIR/src/v/bp_fe_branch_predictor.v
+$BP_FE_DIR/src/v/bp_fe_ras.sv
 $BP_FE_DIR/src/v/bp_fe_btb.v
 $BP_FE_DIR/src/v/bp_fe_cce_lce_cmd.v
 $BP_FE_DIR/src/v/bp_fe_cce_lce_data_cmd.v
