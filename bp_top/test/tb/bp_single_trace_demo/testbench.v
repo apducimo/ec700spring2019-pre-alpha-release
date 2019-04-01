@@ -240,6 +240,12 @@ always_ff @(posedge clk_i)
     if (test_done)
       begin
         $display("Test PASSed! Clocks: %d Instr: %d mIPC: %d", clock_cnt, instr_cnt, (1000*instr_cnt) / clock_cnt);
+        $display("Clock cycles count: %0d", test_bp.clk_cnt);
+        $display("Correct predictions: %0d", test_bp.bp_correct);
+        $display("Incorrect predictions: %0d", test_bp.bp_incorrect);
+        $display("LCE request count: %0d", test_bp.lce_req_cnt);
+        $display("CCE request count: %0d", test_bp.cce_req_cnt);
+        $display("SB miss count: %0d", test_bp.sb_miss_cnt); 
         $finish(0);
       end
   end
