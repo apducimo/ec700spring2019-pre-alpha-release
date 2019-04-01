@@ -49,9 +49,6 @@ assign branch_metadata_o     = {pc_fwd_i[btb_indx_width_p-1:0]
                                 ,pc_fwd_i[bht_indx_width_p-1:0]
                                 ,ras_addr_width_p'(0)
                                };
-
-
-   
 bp_fe_bht 
  #(.bht_indx_width_p(bht_indx_width_p)
    ) 
@@ -69,6 +66,33 @@ bp_fe_bht
    ,.correct_i(attaboy_i)
    ,.predict_o(predict)
    );
+
+/* -----\/----- EXCLUDED -----\/-----
+   bp_tournament_bht #(
+     .PC_W      (32'd32),
+     .PPHT_IDXW (bht_indx_width_p),
+     .PPHT_W    (32'd2),
+     .GH_W      (bht_indx_width_p),
+     .META_IDXW (bht_indx_width_p)
+   ) bht_1 (
+     // Clocks and Resets
+     .reset_i    (reset_i),                        // (I) Reset, active high
+
+     .clk_i      (clk_i),                          // (I) Clock
+
+     // Branch History Table Access
+     .bht_r_i    (r_v_i),                          // (I) Read enable
+     .bht_r_pc_i (pc_fwd_i[31:0]), // (I) Read address
+
+     .bht_w_i    (w_v_i),                          // (I) Write enable
+     .bht_w_pc_i ({25'd0, branch_metadata_i.bht_indx, 2'd0}),     // (I) Write Address
+
+     // Branch Outcome/Feedback
+     .predict_o  (predict),                        // (O) Prediction outcome
+
+     .correct_i  (attaboy_i)                       // (I) Prediction result
+   );
+ -----/\----- EXCLUDED -----/\----- */
 
     
 bp_fe_btb
