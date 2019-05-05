@@ -31,6 +31,7 @@ module test_bp
 
    , localparam reg_data_width_lp          = rv64_reg_data_width_gp
    , localparam byte_width_lp              = rv64_byte_width_gp
+   ,parameter TIMEOUT = 32'd1000000
  );
 
 `declare_bp_common_proc_cfg_s(core_els_p, num_lce_p)
@@ -157,6 +158,12 @@ bp_cce_inst_rom
    (.addr_i(cce_inst_boot_rom_addr)
     ,.data_o(cce_inst_boot_rom_data)
     );
+
+  initial begin
+    #(TIMEOUT);
+    $display("Simulation Timeout!!!");
+    $finish;
+  end
 
 endmodule : test_bp
 
