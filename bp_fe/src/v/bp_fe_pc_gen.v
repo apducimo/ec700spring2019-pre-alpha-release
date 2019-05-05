@@ -53,6 +53,9 @@ module bp_fe_pc_gen
    , input [bp_fe_pc_gen_width_i_lp-1:0]             fe_pc_gen_i
    , input                                           fe_pc_gen_v_i
    , output logic                                    fe_pc_gen_ready_o
+
+   , output [eaddr_width_p-1:0] pc_src
+   , output [eaddr_width_p-1:0] pc_dst
    );
 
 // Suppress unused signal warnings
@@ -319,6 +322,7 @@ generate
     .pc_v_o  (ras_pc_v)             // (O) PC prediction valid
   );
 
-
-
+  assign pc_src = pc;
+  assign pc_dst = next_pc;
+  
 endmodule

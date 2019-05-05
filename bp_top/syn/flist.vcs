@@ -88,6 +88,10 @@ $BP_BE_DIR/src/v/bp_be_checker/bp_be_scheduler.v
 # MMU
 $BP_BE_DIR/src/v/bp_be_mmu/bp_be_mmu_top.v
 $BP_BE_DIR/src/v/bp_be_mmu/bp_be_stream_buffer.sv
+$BP_BE_DIR/src/v/Top.ZynqKomodoConfig.v
+$BP_BE_DIR/src/v/AsyncResetReg.v
+$BP_BE_DIR/src/v/plusarg_reader.v
+$BP_BE_DIR/src/v/bp_be_rocc_adaptor.sv
 $BP_BE_DIR/src/v/bp_be_mmu/bp_be_dcache/bp_be_dcache.v
 $BP_BE_DIR/src/v/bp_be_mmu/bp_be_dcache/bp_be_dcache_lce_cmd.v
 $BP_BE_DIR/src/v/bp_be_mmu/bp_be_dcache/bp_be_dcache_lce.v

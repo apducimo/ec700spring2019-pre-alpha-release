@@ -146,6 +146,9 @@ module bp_fe_top
    , output logic[bp_lce_lce_tr_resp_width_lp-1:0]    lce_lce_tr_resp_o
    , output logic                                     lce_lce_tr_resp_v_o
    , input                                            lce_lce_tr_resp_ready_i
+
+   , output [eaddr_width_p-1:0] pc_src
+   , output [eaddr_width_p-1:0] pc_dst
    );
 
 // the first level of structs
@@ -291,6 +294,8 @@ bp_fe_pc_gen
    ,.fe_pc_gen_i(fe_pc_gen)
    ,.fe_pc_gen_v_i(fe_pc_gen_v)
    ,.fe_pc_gen_ready_o(fe_pc_gen_ready)
+   ,.pc_src (pc_src)
+   ,.pc_dst (pc_dst)
    );
 
    

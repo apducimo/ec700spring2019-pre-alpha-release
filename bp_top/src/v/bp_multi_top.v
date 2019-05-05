@@ -124,6 +124,10 @@ logic [num_lce_p-1:0] remote_lce_tr_resp_v, remote_lce_tr_resp_rdy;
 
 bp_proc_cfg_s[core_els_p-1:0] proc_cfg;
 
+logic [63:0] pc_src;
+logic [63:0] pc_dst;
+
+
 // Module instantiations
 genvar core_id;
 generate 
@@ -192,6 +196,9 @@ for(core_id = 0; core_id < core_els_p; core_id++)
        ,.lce_lce_tr_resp_o(remote_lce_tr_resp[icache_id])
        ,.lce_lce_tr_resp_v_o(remote_lce_tr_resp_v[icache_id])
        ,.lce_lce_tr_resp_ready_i(remote_lce_tr_resp_rdy[icache_id])
+
+       ,.pc_src (pc_src)
+       ,.pc_dst (pc_dst)
        );
 
     bsg_fifo_1r1w_rolly 
@@ -295,6 +302,9 @@ for(core_id = 0; core_id < core_els_p; core_id++)
        ,.cmt_trace_stage_reg_o(cmt_trace_stage_reg_o[core_id])
        ,.cmt_trace_result_o(cmt_trace_result_o[core_id])
        ,.cmt_trace_exc_o(cmt_trace_exc_o[core_id])
+
+       ,.pc_src (pc_src)
+       ,.pc_dst (pc_dst)
        );
   end
 endgenerate 
