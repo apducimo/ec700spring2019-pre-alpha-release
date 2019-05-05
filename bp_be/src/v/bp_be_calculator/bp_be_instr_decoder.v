@@ -245,6 +245,11 @@ always_comb
             default : illegal_instr = 1'b1;
           endcase
         end
+      7'h2b : begin
+        illegal_instr = 1'b0;
+        decode.src1_sel   = e_src1_is_rs1;
+        decode.src2_sel   = e_src2_is_rs2;
+      end
       default : illegal_instr = 1'b1;
     endcase
 

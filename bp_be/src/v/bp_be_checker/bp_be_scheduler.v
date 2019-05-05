@@ -155,6 +155,10 @@ always_comb
                 issue_pkt.irs1_v = '1; 
                 issue_pkt.irs2_v = '1; 
               end
+            7'h2b : begin
+              issue_pkt.irs1_v = '1; 
+              issue_pkt.irs2_v = '1; 
+            end
             default : 
               begin
                 // Should not reach
